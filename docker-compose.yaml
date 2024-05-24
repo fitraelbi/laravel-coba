@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    image: fitrakz/coba-laravel
+    container_name: laravel-app
+    restart: unless-stopped
+    volumes:
+      - .:/var/www
+    networks:
+      - laravel
+
+  web:
+    image: nginx:alpine
+    container_name: laravel-web
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - app
+    networks:
+      - laravel
+
+networks:
+  laravel:
+
